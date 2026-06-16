@@ -1,86 +1,187 @@
-I-Based Handwritten Answer Sheet Evaluator
-An intelligent system that automatically evaluates handwritten answer sheets using Computer Vision, NLP, and Generative AI — producing scores and personalized feedback in under 10 seconds.
+# AI-Powered Handwritten Answer Sheet Evaluator
 
-Developed: 2025
+An AI-driven system that automates the evaluation of handwritten answer sheets using Optical Character Recognition (OCR), Natural Language Processing (NLP), and Large Language Models (LLMs).
 
-Overview
-Manual grading is time-intensive, inconsistent, and leaves no room for personalized feedback. This system solves that by combining GPT-4o-mini Vision for OCR, BERT for semantic scoring, and Ollama for AI-generated feedback — all through a clean React interface built for teachers.
-Features
+The platform extracts handwritten responses, evaluates semantic correctness against model answers, generates scores, and provides intelligent feedback through a complete full-stack application built with React, FastAPI, MongoDB, BERT, GPT, and Ollama.
 
-Batch Evaluation — Upload one handwritten sheet; the system detects Q1, Q2, Q3 and scores all answers automatically
-Vision-Level OCR — GPT-4o-mini reads handwriting like a human, no line segmentation needed
-Semantic Scoring — BERT understands meaning, not just keywords — different words, same concept → still scores well
-AI Feedback — Ollama runs locally, generating constructive per-answer feedback with no cloud cost or privacy risk
-Evaluation History — Every result saved in MongoDB with per-question breakdown
-Fast — Full answer sheet evaluated in under 10 seconds
+---
 
-Technology Stack
-LayerTechnologyPurposeFrontendReact.js + AxiosTeacher-facing UI with Q-Bank, evaluation, and history pagesBackendFastAPI (Python)Async REST API orchestrating all modulesDatabaseMongoDBFlexible schema for questions and evaluationsOCRGPT-4o-mini VisionHuman-level handwriting extractionNLP ScoringBERT all-MiniLM-L6-v2Semantic similarity scoringNLICross-encoder NLIDetects entailment / contradictionFeedback AIOllama (Local LLM)On-premise generative feedback
-System Architecture
-Image Upload → GPT-4o-mini (OCR) → Text Extraction
-                                        ↓
-                              BERT + NLI (Scoring)
-                                        ↓
-                            Ollama (Feedback Generation)
-                                        ↓
-                         MongoDB (Storage) → React UI (Display)
-Module Breakdown
-ModuleDeveloper RoleResponsibilityM1 — OCROCR DeveloperBase64 encode → GPT-4o-mini → clean textM2 — NLPNLP DeveloperBERT scoring + NLI entailment detectionM3 — BackendBackend DeveloperFastAPI routes, Ollama integration, 8 REST endpointsM4 — FrontendFrontend DeveloperReact pages: Home, Q-Bank, Evaluate, History
-Getting Started
-Prerequisites
+## Overview
 
-Python 3.9+
-Node.js 18+
-MongoDB (local)
-Ollama installed locally
-OpenAI API key (for GPT-4o-mini Vision)
+Manual answer-sheet evaluation is often time-consuming, inconsistent, and difficult to scale. This project addresses that challenge by introducing an AI-powered evaluation pipeline capable of:
 
-Installation
-bash# Clone the repository
-git clone https://github.com/ahmed27dev/answer-sheet-evaluator.git
-cd answer-sheet-evaluator
+* Extracting handwritten text from answer sheets
+* Understanding answer semantics using NLP
+* Comparing student answers with model answers
+* Generating context-aware scores
+* Providing AI-generated feedback
+* Supporting multi-page answer-sheet processing
+* Maintaining evaluation history
 
-# Backend setup
-cd backend
-pip install -r requirements.txt
+---
 
-# Create .env file
-echo "OPENAI_API_KEY=your_key_here" > .env
+## Key Features
 
-# Run backend
-uvicorn main:app --reload
+### OCR-Based Handwritten Text Extraction
 
-# Frontend setup (new terminal)
-cd frontend
-npm install
-npm start
-Environment Variables
-Create a .env file in the /backend directory:
-OPENAI_API_KEY=your_openai_api_key
+* Extracts handwritten content from answer sheets
+* Preserves answer structure and question flow
+* Supports multi-page answer processing
 
-API Endpoints
-MethodEndpointDescriptionPOST/evaluate/textEvaluate a typed answerPOST/evaluate/batchEvaluate a full image answer sheetGET/questionsGet all questions from Q-BankPOST/questionsAdd a new questionGET/historyGet evaluation history
-Evaluation Pipeline
-Text Answer Flow:
+### Semantic Answer Evaluation
 
-Select question → Type answer → NLP scores vs model answer → Ollama generates feedback → Saved to MongoDB
+* Uses transformer-based NLP models (BERT)
+* Evaluates answers based on meaning rather than keyword matching
+* Supports partial answer detection
 
-Image Batch Flow:
+### Context-Aware Scoring
 
-Upload handwritten sheet → GPT-4o-mini extracts text → Split by Q1/Q2/Q3 → BERT scores each → Ollama gives per-answer feedback → Total score saved
+* Generates scores based on semantic similarity
+* Detects incomplete and contradictory responses
+* Provides consistent evaluation criteria
 
-Future Scope
+### AI Feedback Generation
 
-Student login portal for direct result access
-Multi-language handwriting support
-Domain-specific fine-tuned BERT models
-Export evaluation reports as PDF
-Admin analytics dashboard
+* Generates human-like feedback
+* Supports local inference using Ollama
+* Can integrate with cloud-based LLMs
 
-Team
-Built as a team project for our Computer Science Engineering program.
+### Evaluation History Tracking
 
-Ahmed Mohammed — Backend Developer
-Ali Al-Tam — OCR Developer
-Anagha Nair — NLP Developer
-Aditi Padole — Frontend Developer
+* Stores previous evaluations
+* Allows users to review past results
+
+### Full-Stack Architecture
+
+* React Frontend
+* FastAPI Backend
+* MongoDB Database
+* OCR + NLP + LLM Pipeline
+
+---
+
+## Technology Stack
+
+### Frontend
+
+* React.js
+* React Router
+* JavaScript
+* CSS
+
+### Backend
+
+* FastAPI
+* Python
+
+### Database
+
+* MongoDB
+
+### Artificial Intelligence
+
+#### OCR Layer
+
+* GPT-4o-mini based handwritten text extraction
+
+#### NLP Evaluation
+
+* BERT (Bidirectional Encoder Representations from Transformers)
+
+#### Feedback Generation
+
+* Ollama (Local LLM Inference)
+* Large Language Models (LLMs)
+
+---
+
+## Project Architecture
+
+The system follows a modular AI pipeline:
+
+```text
+React Frontend
+        │
+        ▼
+FastAPI Backend
+        │
+        ▼
+OCR Module (GPT-4o-mini)
+        │
+        ▼
+MongoDB Question Bank
+        │
+        ▼
+NLP Module (BERT)
+        │
+        ▼
+Ollama / LLM Feedback Generator
+        │
+        ▼
+Score + Feedback
+```
+
+### Architecture Diagram
+
+![System Architecture](architecture/System-architecture.jpg)
+
+
+---
+
+## Application Screenshots
+
+### Home Page
+
+![Home Page](ScreenShots/HomePage.png)
+
+---
+
+### Question Bank Management
+
+![Question Bank](ScreenShots/QuestionBankPage.png)
+
+---
+
+### Answer Evaluation
+
+![Evaluation Page](ScreenShots/EvaluatePage.png)
+
+---
+
+### Evaluation History
+
+![History Page](ScreenShots/HistoryPage.png)
+
+---
+
+## Future Improvements
+
+* Support additional OCR models
+* Improve semantic scoring accuracy
+* Add role-based authentication
+* Deploy using Docker and cloud infrastructure
+* Generate detailed performance analytics
+* Support multiple evaluation rubrics
+* Real-time answer evaluation
+
+---
+
+## Learning Outcomes
+
+Through this project, the following areas were explored:
+
+* Full Stack Development
+* REST API Design
+* Artificial Intelligence
+* Natural Language Processing
+* Optical Character Recognition
+* Prompt Engineering
+* MongoDB Integration
+* System Design
+* Human-AI Interaction
+
+---
+
+## License
+
+This project is intended for educational and research purposes.
